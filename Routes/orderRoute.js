@@ -128,8 +128,8 @@ router.post('/easebuzz/initiate', fetchUser, async (req, res) => {
       firstname: firstname.trim(),
       email: email.trim(),
       phone: phone.trim(),
-      surl: `https://exerenergybackend-kf4s.vercel.app/success`,
-      furl: `https://exerenergybackend-kf4s.vercel.app/success`,
+      surl: `https://exerbackend-cm9f.vercel.app/success`,
+      furl: `https://exerbackend-cm9f.vercel.app/success`,
     };
 
     console.log('Request Data:', data);

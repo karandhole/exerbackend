@@ -147,7 +147,7 @@ app.post("/addproduct", upload.array("images", 10), async (req, res) => {
 
     // Map uploaded file paths to full image URLs
     const imageUrls = req.files.map((file) => {
-      return `https://exerenergybackend-kf4s.vercel.app/images/${file.filename}`;
+      return `https://exerbackend-cm9f.vercel.app/images/${file.filename}`;
     });
 
     // Parse JSON strings for colors and tags
