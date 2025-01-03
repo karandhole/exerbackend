@@ -25,7 +25,7 @@ const jwt  = require("jsonwebtoken");
 
 // Middleware for parsing JSON and handling CORS
 
-app.use(cors({ origin: '*' })); // Replace '*' with your frontend's domain for better security
+app.use(cors({ origin: 'https://localhost:3000' })); // Replace '*' with your frontend's domain for better security
 
 app.use(cors()); 
 app.use(bodyParser.json());
@@ -627,7 +627,7 @@ app.post('/success', (req, res) => {
 
 app.listen(port, (err) => {
     if (!err) {
-    console.log(`Server running on port ${port}`);
+    console.log(`Server running on port `);
   } else {
     console.error("Error starting server:", err);
   }

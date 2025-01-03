@@ -1,7 +1,7 @@
 {
     "builds": [
       {
-        "src": "serverless/index.js",
+        "src": "backend/index.js",
         "use": "@vercel/node"
       }
     ]
