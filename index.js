@@ -592,12 +592,12 @@ app.post('/success', (req, res) => {
     console.log(`Payment Successful for Transaction ID: ${txnid}`);
 
     // Redirect with txnid and message as query parameters
-    res.redirect(`http://localhost:3000/success?txnid=${txnid}&message=Payment+was+successful`);
+    res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
   } else {
     console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
 
     // Redirect with failure message
-    res.redirect(`http://localhost:3000/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+    res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
   }
 });
 
