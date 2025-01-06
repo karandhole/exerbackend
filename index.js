@@ -298,7 +298,7 @@ app.post("/login", async (req, res) => {
         const token = jwt.sign(data, secretKey);
 
         // Check if the user is an admin
-        const role = user.email === "admin@gmail.com" ? "admin" : "user";
+        const role = user.email === "sales@exerenergy.com" ? "admin" : "user";
 
         res.json({ success: true, token, role });
         console.log(`${role} logged in successfully: `, data);
