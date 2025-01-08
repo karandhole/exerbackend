@@ -159,10 +159,10 @@ router.post('/easebuzz/initiate', fetchUser, async (req, res) => {
       // Store order details in the database
 
       // Construct the payment URL
-      // const paymentUrl = `https://testpay.easebuzz.in/pay/${paymentToken}`;
+       const paymentUrl = `https://testpay.easebuzz.in/pay/${paymentToken}`;
 
       // for production
-      const paymentUrl = `https://pay.easebuzz.in/pay/${paymentToken}`;
+      // const paymentUrl = `https://pay.easebuzz.in/pay/${paymentToken}`;
 
       // send to database
       res.json({ success: true, paymentUrl });
