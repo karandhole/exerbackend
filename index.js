@@ -601,6 +601,20 @@ app.get("/getCartData", fetchUser, async (req, res) => {
 //   }
 // });
 
+const emptyCart = async (user) => {
+  try {
+    user.cartData = []; // Clear the cart
+    user.markModified("cartData");
+    await user.save(); // Save the changes to the database
+    console.log("Cart emptied successfully");
+    return true;
+  } catch (error) {
+    console.error("Error emptying cart:", error);
+    return false;
+  }
+};
+
+
 app.post('/success', fetchUser, async (req, res) => {
   const { txnid, status } = req.body;
 
