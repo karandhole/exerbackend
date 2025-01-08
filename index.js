@@ -585,21 +585,67 @@ app.get("/getCartData", fetchUser, async (req, res) => {
 
 // Success route
 
-app.post('/success', (req, res) => {
-  const { txnid, status } = req.body;
+// app.post('/success', (req, res) => {
+//   const { txnid, status } = req.body;
+
+//   if (status === 'success') {
+//     console.log(`Payment Successful for Transaction ID: ${txnid}`);
+
+//     // Redirect with txnid and message as query parameters
+//     res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
+//   } else {
+//     console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
+
+//     // Redirect with failure message
+//     res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+//   }
+// });
+
+// to remove from cart
+
+app.post('/success', async (req, res) => {
+  const { txnid, status, cartItems } = req.body; // Include cart items in the request body
 
   if (status === 'success') {
     console.log(`Payment Successful for Transaction ID: ${txnid}`);
 
-    // Redirect with txnid and message as query parameters
+    // Remove items from cart
+    try {
+      const user = req.user; // Fetch user from the middleware
+      if (!user) {
+        return res.redirect(`https://365needs.com/failed?txnid=${txnid}&message=User+not+found`);
+      }
+
+      cartItems.forEach((item) => {
+        const { productId, selectedColor, selectedBattery } = item;
+
+        const productIndex = user.cartData.findIndex(
+          (cartItem) =>
+            cartItem.id.toString() === productId.toString() &&
+            cartItem.selectedColor === selectedColor &&
+            cartItem.selectedBattery === selectedBattery
+        );
+
+        if (productIndex > -1) {
+          user.cartData.splice(productIndex, 1);
+        }
+      });
+
+      user.markModified('cartData');
+      await user.save();
+      console.log('Cart updated after successful payment.');
+    } catch (error) {
+      console.error('Error updating cart after payment:', error);
+    }
+
+    // Redirect to success page
     res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
   } else {
     console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
-
-    // Redirect with failure message
     res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
   }
 });
+
 
 
 
