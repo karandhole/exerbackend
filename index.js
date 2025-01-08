@@ -585,21 +585,69 @@ app.get("/getCartData", fetchUser, async (req, res) => {
 
 // Success route
 
-app.post('/success', (req, res) => {
+// app.post('/success', (req, res) => {
+//   const { txnid, status } = req.body;
+
+//   if (status === 'success') {
+//     console.log(`Payment Successful for Transaction ID: ${txnid}`);
+
+//     // Redirect with txnid and message as query parameters
+//     res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
+//   } else {
+//     console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
+
+//     // Redirect with failure message
+//     res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+//   }
+// });
+
+app.post('/success', fetchUser, async (req, res) => {
   const { txnid, status } = req.body;
 
-  if (status === 'success') {
-    console.log(`Payment Successful for Transaction ID: ${txnid}`);
+  try {
+    if (status === 'success') {
+      console.log(`Payment Successful for Transaction ID: ${txnid}`);
 
-    // Redirect with txnid and message as query parameters
-    res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
-  } else {
-    console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
+      // Fetch user from middleware
+      const user = req.user;
 
-    // Redirect with failure message
-    res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+      if (!user || !user.cartData || user.cartData.length === 0) {
+        console.error('User or cart data not found');
+        return res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful+but+no+cart+data+found`);
+      }
+
+      console.log('Removing items from cart:', user.cartData);
+
+      // Iterate through each cart item and call `removeFromCart`
+      for (const item of user.cartData) {
+        try {
+          const { id: productId, selectedColor, selectedBattery } = item;
+
+          // Call removeFromCart logic or endpoint
+          await axios.post(
+            'https://exerbackend-cm9f.vercel.app/removeFromCart',
+            { productId, selectedColor, selectedBattery },
+            { headers: { Authorization: `Bearer ${user.token}` } } // Include auth token if needed
+          );
+
+          console.log(`Removed product ${productId} from cart successfully.`);
+        } catch (error) {
+          console.error(`Failed to remove product ${item.id} from cart:`, error.message);
+        }
+      }
+
+      // Redirect to success page
+      res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
+    } else {
+      console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
+      res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+    }
+  } catch (error) {
+    console.error('Error handling payment success:', error.message);
+    res.status(500).json({ success: false, message: 'Error processing payment success.' });
   }
 });
+
 
 
 
