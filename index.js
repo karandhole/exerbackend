@@ -627,7 +627,7 @@ app.post('/success', fetchUser, async (req, res) => {
           await axios.post(
             'https://exerbackend-cm9f.vercel.app/removeFromCart',
             { productId, selectedColor, selectedBattery },
-            { headers: { Authorization: `Bearer ${user.token}` } } // Include auth token if needed
+            // { headers: { Authorization: `Bearer ${user.token}` } } // Include auth token if needed
           );
 
           console.log(`Removed product ${productId} from cart successfully.`);
