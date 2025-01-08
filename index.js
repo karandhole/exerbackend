@@ -585,22 +585,51 @@ app.get("/getCartData", fetchUser, async (req, res) => {
 
 // Success route
 
-app.post('/success', (req, res) => {
+// app.post('/success', (req, res) => {
+//   const { txnid, status } = req.body;
+
+//   if (status === 'success') {
+//     console.log(`Payment Successful for Transaction ID: ${txnid}`);
+
+//     // Redirect with txnid and message as query parameters
+//     res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
+//   } else {
+//     console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
+
+//     // Redirect with failure message
+//     res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+//   }
+// });
+
+app.post('/success', fetchUser, async (req, res) => {
   const { txnid, status } = req.body;
 
-  if (status === 'success') {
-    console.log(`Payment Successful for Transaction ID: ${txnid}`);
+  try {
+    if (status === 'success') {
+      console.log(`Payment Successful for Transaction ID: ${txnid}`);
+      
+      // Call the emptyCart function to clear the cart
+      const cartCleared = await emptyCart(req.user);
+      
+      if (cartCleared) {
+        console.log("Cart cleared after successful payment");
+      } else {
+        console.error("Failed to clear cart after successful payment");
+      }
 
-    // Redirect with txnid and message as query parameters
-    res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
-  } else {
-    console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
+      // Redirect with txnid and message as query parameters
+      return res.redirect(`https://365needs.com/success?txnid=${txnid}&message=Payment+was+successful`);
+    } else {
+      console.error(`Payment Failed for Transaction ID: ${txnid || 'unknown'}`);
 
-    // Redirect with failure message
-    res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+      // Redirect with failure message
+      return res.redirect(`https://365needs.com/failed?txnid=${txnid || 'N/A'}&message=Payment+failed`);
+    }
+  } catch (error) {
+    console.error("Error processing payment success:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
-
 
 
 
