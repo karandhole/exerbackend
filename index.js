@@ -342,7 +342,7 @@ const fetchUser = async (req, res, next) => {
   }
 };
 
-app.post("/addToCart", fetchUser, async (req, res) => {
+app.post("/addToCart", async (req, res) => { // fetchuser is removed 
   console.log("Received request at /addToCart");
 
   const { product } = req.body;
