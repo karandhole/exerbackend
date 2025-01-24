@@ -342,66 +342,10 @@ const fetchUser = async (req, res, next) => {
   }
 };
 
-// app.post("/addToCart", fetchUser, async (req, res) => {
-//   console.log("Received request at /addToCart");
-
-//   const { product } = req.body;
-
-//   // Log the incoming product data to check if selectedBattery is present
-//   console.log("Product data received:", product);
-
-//   if (
-//     !product ||
-//     !product.id ||
-//     !product.name ||
-//     !product.selectedColor ||
-//     !product.selectedBattery ||  // Validate selectedBattery
-//     !product.category ||         // Validate category
-//     !product.image ||            // Validate image URL
-//     !product.price ||            // Validate price
-//     !product.quantity           // Validate quantity
-//   ) {
-//     return res.status(400).json({ message: "Invalid product data" });
-//   }
-
-//   try {
-//     let user = req.user; // User is already attached by the fetchUser middleware
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     console.log("Checking if the product already exists in the cart...");
-
-//     // Check if product is already in the cart (based on id, color, and battery)
-//     const existingProductIndex = user.cartData.findIndex(
-//       (item) =>
-//         item.id.toString() === product.id.toString() &&
-//         item.selectedColor === product.selectedColor     &&  
-//         item.selectedBattery === product.selectedBattery
-//     );
-
-//     if (existingProductIndex > -1) {
-//       // Update quantity of existing product in the cart
-//       user.cartData[existingProductIndex].quantity += product.quantity;
-//       user.markModified("cartData");
-//     } else {
-//       // Add new product to the cart
-//       user.cartData.push(product);
-//     }
-
-//     // Save the updated user document
-//     await user.save();
-//     res.status(200).json({ message: "Product added to cart", cartData: user.cartData });
-//   } catch (error) {
-//     console.error("Error adding product to cart:", error);
-//     res.status(500).json({ message: "Error adding product to cart", error });
-//   }
-// });
-
-app.post("/addToCart", async (req, res) => {
+app.post("/addToCart", fetchUser, async (req, res) => {
   console.log("Received request at /addToCart");
 
-  const { product, isGuest } = req.body;
+  const { product } = req.body;
 
   // Log the incoming product data to check if selectedBattery is present
   console.log("Product data received:", product);
@@ -411,23 +355,16 @@ app.post("/addToCart", async (req, res) => {
     !product.id ||
     !product.name ||
     !product.selectedColor ||
-    !product.selectedBattery || // Validate selectedBattery
-    !product.category ||        // Validate category
-    !product.image ||           // Validate image URL
-    !product.price ||           // Validate price
+    !product.selectedBattery ||  // Validate selectedBattery
+    !product.category ||         // Validate category
+    !product.image ||            // Validate image URL
+    !product.price ||            // Validate price
     !product.quantity           // Validate quantity
   ) {
     return res.status(400).json({ message: "Invalid product data" });
   }
 
   try {
-    if (isGuest) {
-      // For guest users, send the product data back to the client
-      console.log("Guest user: Returning product to client for local storage");
-      return res.status(200).json({ message: "Product added to cart (guest)", product });
-    }
-
-    // For authenticated users, use the fetchUser middleware
     let user = req.user; // User is already attached by the fetchUser middleware
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -439,7 +376,7 @@ app.post("/addToCart", async (req, res) => {
     const existingProductIndex = user.cartData.findIndex(
       (item) =>
         item.id.toString() === product.id.toString() &&
-        item.selectedColor === product.selectedColor &&
+        item.selectedColor === product.selectedColor     &&  
         item.selectedBattery === product.selectedBattery
     );
 
@@ -460,6 +397,69 @@ app.post("/addToCart", async (req, res) => {
     res.status(500).json({ message: "Error adding product to cart", error });
   }
 });
+
+// app.post("/addToCart", async (req, res) => {
+//   console.log("Received request at /addToCart");
+
+//   const { product, isGuest } = req.body;
+
+//   // Log the incoming product data to check if selectedBattery is present
+//   console.log("Product data received:", product);
+
+//   if (
+//     !product ||
+//     !product.id ||
+//     !product.name ||
+//     !product.selectedColor ||
+//     !product.selectedBattery || // Validate selectedBattery
+//     !product.category ||        // Validate category
+//     !product.image ||           // Validate image URL
+//     !product.price ||           // Validate price
+//     !product.quantity           // Validate quantity
+//   ) {
+//     return res.status(400).json({ message: "Invalid product data" });
+//   }
+
+//   try {
+//     if (isGuest) {
+//       // For guest users, send the product data back to the client
+//       console.log("Guest user: Returning product to client for local storage");
+//       return res.status(200).json({ message: "Product added to cart (guest)", product });
+//     }
+
+//     // For authenticated users, use the fetchUser middleware
+//     let user = req.user; // User is already attached by the fetchUser middleware
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     console.log("Checking if the product already exists in the cart...");
+
+//     // Check if product is already in the cart (based on id, color, and battery)
+//     const existingProductIndex = user.cartData.findIndex(
+//       (item) =>
+//         item.id.toString() === product.id.toString() &&
+//         item.selectedColor === product.selectedColor &&
+//         item.selectedBattery === product.selectedBattery
+//     );
+
+//     if (existingProductIndex > -1) {
+//       // Update quantity of existing product in the cart
+//       user.cartData[existingProductIndex].quantity += product.quantity;
+//       user.markModified("cartData");
+//     } else {
+//       // Add new product to the cart
+//       user.cartData.push(product);
+//     }
+
+//     // Save the updated user document
+//     await user.save();
+//     res.status(200).json({ message: "Product added to cart", cartData: user.cartData });
+//   } catch (error) {
+//     console.error("Error adding product to cart:", error);
+//     res.status(500).json({ message: "Error adding product to cart", error });
+//   }
+// });
 
 
 
