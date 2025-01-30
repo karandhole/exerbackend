@@ -25,7 +25,10 @@ const jwt  = require("jsonwebtoken");
 
 // Middleware for parsing JSON and handling CORS
 
-app.use(cors({ origin: '*' })); // Replace '*' with your frontend's domain for better security
+
+
+// Allow all origins (Not recommended for production)
+app.use(cors({ origin: '*' }));
 
 app.use(cors()); 
 app.use(bodyParser.json());
@@ -38,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const UserSchema = require("./models/UserSchema");
 // Routes
-app.use("/distributor", distributorRoutes);
+app.use('/distributor', distributorRoutes);
 
 
 // Key
