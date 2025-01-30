@@ -1,4 +1,4 @@
-// const port = 4900;
+const port = 4900;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -7,7 +7,7 @@ const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const OrderRoutes = require('./Routes/orderRoute');
 // const OrderModal = require('./models/OrderModal'); // Your Mongoose model
@@ -17,7 +17,7 @@ const axios = require('axios');
 const qs = require('qs');
 const Order = require('./models/OrderModal');  // Ensure the path to Order model is correct
 
-
+const distributorRoutes = require("./Routes/distributorRoutes");
 // Importing Product Model
 
 const Product = require("./models/Product");
@@ -37,6 +37,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // schema models 
 
 const UserSchema = require("./models/UserSchema");
+// Routes
+app.use("/distributor", distributorRoutes);
 
 
 // Key
@@ -691,7 +693,7 @@ app.post('/success', (req, res) => {
 
 app.listen( (err) => {
     if (!err) {
-    console.log(`Server running on port `);
+    console.log(`Server running on port ${port}`);
   } else {
     console.error("Error starting server:", err);
   }
