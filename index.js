@@ -18,6 +18,7 @@ const qs = require('qs');
 const Order = require('./models/OrderModal');  // Ensure the path to Order model is correct
 
 const distributorRoutes = require("./Routes/distributorRoutes");
+const distributorApplicationRoutes = require("./Routes/distributorApplicationRoutes");
 // Importing Product Model
 
 const Product = require("./models/Product");
@@ -42,6 +43,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const UserSchema = require("./models/UserSchema");
 // Routes
 app.use('/distributor', distributorRoutes);
+app.use('/applydistributor',distributorApplicationRoutes);
+
 
 
 // Key

@@ -13,3 +13,4 @@ const DistributorSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Distributor", DistributorSchema);
+
