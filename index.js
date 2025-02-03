@@ -28,11 +28,14 @@ const jwt  = require("jsonwebtoken");
 
 
 
-app.use(cors({
-  origin: ["http://localhost:3000", "https://exerenergy.com"], // Add frontend domains here
-  methods: "GET,POST,PUT,DELETE",
-  allowedHeaders: "Content-Type,Authorization"
-}));
+// app.use(cors({
+//   origin: ["http://localhost:3000", "https://exerenergy.com"], // Add frontend domains here
+//   methods: "GET,POST,PUT,DELETE",
+//   allowedHeaders: "Content-Type,Authorization"
+// }));
+
+app.use(cors({ origin: "*" }));
+
 
 app.use(cors()); 
 app.use(bodyParser.json());
