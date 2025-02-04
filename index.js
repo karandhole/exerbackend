@@ -28,23 +28,17 @@ const jwt  = require("jsonwebtoken");
 
 
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (origin === "https://www.exerenergy.com" || origin === "http://localhost:3000" || !origin) {
-      // Allow the request from allowed origins or if the origin is undefined (in case of local testing)
-      callback(null, true);
-    } else {
-      // If the origin is not allowed
-      callback(new Error("CORS Error: Origin not allowed"));
-    }
-  },
-  methods: "GET, POST, OPTIONS, PUT, DELETE",
-  allowedHeaders: "Content-Type, Authorization",
-  credentials: true // Allow cookies or credentials
-}));
+// app.use(cors({
+//   origin: ["http://localhost:3000", "https://exerenergy.com"], // Add frontend domains here
+//   methods: "GET,POST,PUT,DELETE",
+//   allowedHeaders: "Content-Type,Authorization"
+// }));
 
-// Handle preflight OPTIONS request
-app.options('*', cors());
+app.use(cors({ origin: "*" }));
+
+
+app.use(cors()); 
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));

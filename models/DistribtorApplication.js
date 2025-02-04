@@ -16,4 +16,4 @@ const DistributorApplicationSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("Distributor", DistributorApplicationSchema);
+module.exports = mongoose.model("Distributorapplication", DistributorApplicationSchema);
