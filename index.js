@@ -28,33 +28,23 @@ const jwt  = require("jsonwebtoken");
 
 
 
-// CORS Configuration
-const allowedOrigins = [
-  "http://localhost:3000",   // For local development
-  "https://www.exerenergy.com" // Your production frontend domain
-];
-
 app.use(cors({
   origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true); // Allow request from allowed origins
+    if (origin === "https://www.exerenergy.com" || origin === "http://localhost:3000" || !origin) {
+      // Allow the request from allowed origins or if the origin is undefined (in case of local testing)
+      callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      // If the origin is not allowed
+      callback(new Error("CORS Error: Origin not allowed"));
     }
   },
-  methods: "GET,POST,OPTIONS,PUT,DELETE",
-  allowedHeaders: "Content-Type,Authorization", // Customize as necessary
-  credentials: true // Allow credentials like cookies or authorization headers
+  methods: "GET, POST, OPTIONS, PUT, DELETE",
+  allowedHeaders: "Content-Type, Authorization",
+  credentials: true // Allow cookies or credentials
 }));
 
-// Preflight handling (this is automatically handled by `cors` middleware, but add this if needed)
-app.options("*", cors());  // Preflight CORS
-
-// app.use(cors({ origin: "*" }));
-
-
-// app.use(cors()); 
-app.use(bodyParser.json());
+// Handle preflight OPTIONS request
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
