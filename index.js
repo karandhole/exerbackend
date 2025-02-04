@@ -34,6 +34,11 @@ app.use(cors({
   allowedHeaders: "Content-Type,Authorization"
 }));
 
+
+// Handle preflight requests (for CORS)
+app.options('*', cors());  // This allows the OPTIONS method, which is used for preflight checks
+
+
 // app.use(cors({ origin: "*" }));
 
 
