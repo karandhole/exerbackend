@@ -37,7 +37,7 @@ const jwt  = require("jsonwebtoken");
 app.use(cors({ origin: "*" }));
 
 
-app.use(cors()); 
+// app.use(cors()); 
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
