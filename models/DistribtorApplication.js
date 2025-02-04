@@ -15,5 +15,5 @@ const DistributorApplicationSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const DistributorApplication = mongoose.model("DistributorApplication", DistributorApplicationSchema);
-module.exports = DistributorApplication;
+
+module.exports = mongoose.model("Distributor", DistributorApplicationSchema);
