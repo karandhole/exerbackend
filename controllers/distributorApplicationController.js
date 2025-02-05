@@ -7,10 +7,10 @@ exports.submitApplication = async (req, res) => {
     const { firstName, lastName, mobile, email, state, city, propertyType, businessDetail, distributorId } = req.body;
 
     // Check if distributor exists
-    const distributor = await Distributor.findById(distributorId);
-    if (!distributor) {
-      return res.status(400).json({ message: "Distributor not found" });
-    }
+    // const distributor = await Distributor.findById(distributorId);
+    // if (!distributor) {
+    //   return res.status(400).json({ message: "Distributor not found" });
+    // }
 
     // Check if application already exists
     const existingApplication = await DistributorApplication.findOne({ email });
