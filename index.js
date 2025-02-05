@@ -34,7 +34,7 @@ const jwt  = require("jsonwebtoken");
 //   allowedHeaders: "Content-Type,Authorization"
 // }));
 
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "*" })) ;
 
 
 // app.use(cors()); 
